@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href='bootstrap/css/mdb.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src='bootstrap/js/mdb.min.js'></script>
+    <header class="navbar navbar-fixed-top">
+        <h3 class="navbar-brand px-5"><i class="bi bi-camera caveat-unique-class" style="color: #be0026;"><span style="font-family: 'Caveat', cursive;">&nbsp;Image gallery</span></i></h3>
+    </header>
+    <div ng-controller="MygalleryCtrl" ng-app="Myapp">
+        <div class="grid-container justify-content-center">
+            <div class="grid-item m-2" ng-repeat="x in filteredImages = (images | filter:categoryFilter | orderBy:sortByDate)">
+                <img id="images" ng-src="{{x.src}}" width="250" height="250">
+            </div>
+        </div>
+
+        <div class="filter-button p-3">
+            <button class="btn-1 m-4 p-3" ng-click="toggleFilter()"><i class="bi bi-funnel-fill"></i></button>
+            <div class="filter-popup p-3 mx-2 my-5" ng-class="{ 'show': showFilterPopup }">
+                <form>
+                    <div style="text-align: right;"> 
+                        <input type="reset" value="Clear all" style="background-color: transparent; color: #be0026; border: 1px solid transparent"> 
+                    </div>
+                    <p class="fw-bold m-0">Categories</p>
+                    <ul class="m-0">
+                        <li ng-repeat="x in categories">
+                            <input class="mx-1" type="checkbox" ng-click="setCategoryFilter(x)">{{x}}
+                        </li>
+                    </ul>
+                    <p class="fw-bold m-0">Sort by date</p>
+                    <ul class="m-0">
+                        <li ng-repeat="x in sorting">
+                            <input class="mx-1" type="checkbox" ng-click="setSort(x)">{{x}}
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module('Myapp', []);
+        app.controller('MygalleryCtrl', function($scope) {
+            $scope.categories = ['All', 'Animal', 'Nature', 'Space', 'Cartoon'];
+            $scope.sorting = ['Latest', 'Newest to oldest', 'Oldest to newest'];
+            $scope.images = [
+                { src: 'images/a1.jpg', category: 'Animal', Date: '2002' },
+                { src: 'images/a2.jpg', category: 'Animal', Date: '2012' },
+                { src: 'images/a3.jpg', category: 'Animal', Date: '2005' },
+                { src: 'images/a4.jpg', category: 'Animal', Date: '2012' },
+                { src: 'images/a5.jpg', category: 'Animal', Date: '2023' },
+                { src: 'images/a6.jpg', category: 'Animal', Date: '2024' },
+                { src: 'images/a7.jpg', category: 'Animal', Date: '2024' },
+                { src: 'images/a8.jpg', category: 'Animal', Date: '2024' },
+                { src: 'images/a9.jpg', category: 'Animal', Date: '2022' },
+                { src: 'images/a10.jpg', category: 'Animal', Date: '2012' },
+                { src: 'images/n1.jpg', category: 'Nature', Date: '2002' },
+                { src: 'images/n2.jpg', category: 'Nature', Date: '2012' },
+                { src: 'images/n3.jpg', category: 'Nature', Date: '2005' },
+                { src: 'images/n4.jpg', category: 'Nature', Date: '2012' },
+                { src: 'images/n5.jpg', category: 'Nature', Date: '2023' },
+                { src: 'images/n6.jpg', category: 'Nature', Date: '2024' },
+                { src: 'images/n7.jpg', category: 'Nature', Date: '2024' },
+                { src: 'images/n8.jpg', category: 'Nature', Date: '2024' },
+                { src: 'images/n9.jpg', category: 'Nature', Date: '2022' },
+                { src: 'images/n10.jpg', category: 'Nature', Date: '2012' },
+                { src: 'images/s1.jpg', category: 'Space', Date: '2002' },
+                { src: 'images/s2.jpg', category: 'Space', Date: '2012' },
+                { src: 'images/s3.jpg', category: 'Space', Date: '2005' },
+                { src: 'images/s4.jpg', category: 'Space', Date: '2012' },
+                { src: 'images/s5.jpg', category: 'Space', Date: '2023' },
+                { src: 'images/s6.jpg', category: 'Space', Date: '2024' },
+                { src: 'images/s7.jpg', category: 'Space', Date: '2024' },
+                { src: 'images/s8.jpg', category: 'Space', Date: '2024' },
+                { src: 'images/s9.jpg', category: 'Space', Date: '2022' },
+                { src: 'images/s10.jpg', category: 'Space', Date: '2012' },
+                { src: 'images/c1.jpg', category: 'Cartoon', Date: '2002' },
+                { src: 'images/c2.jpg', category: 'Cartoon', Date: '2012' },
+                { src: 'images/c3.jpg', category: 'Cartoon', Date: '2005' },
+                { src: 'images/c4.jpg', category: 'Cartoon', Date: '2012' },
+                { src: 'images/c5.jpg', category: 'Cartoon', Date: '2023' },
+                { src: 'images/c6.jpg', category: 'Cartoon', Date: '2024' },
+                { src: 'images/c7.jpg', category: 'Cartoon', Date: '2024' },
+                { src: 'images/c8.jpg', category: 'Cartoon', Date: '2024' },
+                { src: 'images/c9.jpg', category: 'Cartoon', Date: '2022' },
+                { src: 'images/c10.jpg', category: 'Cartoon', Date: '2012' },
+            ];
+            $scope.showFilterPopup = false;
+            $scope.sortCriteria = '';
+
+            $scope.toggleFilter = function() {
+                $scope.showFilterPopup = !$scope.showFilterPopup;
+            };
+            $scope.setCategoryFilter = function(category) {
+                if (category === 'All') {
+                    $scope.categoryFilter = {};
+                } else {
+                    $scope.categoryFilter = { category: category };
+                }
+            };
+            $scope.setSort = function(criteria) {
+                if (criteria === 'Latest') {
+                    $scope.sortByDate = '-Date';
+                } else if (criteria === 'Newest to oldest') {
+                    $scope.sortByDate = '-Date';
+                } else if (criteria === 'Oldest to newest') {
+                    $scope.sortByDate = 'Date';
+                }
+            };
+            $scope.setCategoryFilter('All'); 
+            $scope.clearAll = function() {
+                $scope.categoryFilter = {};
+                $scope.sortCriteria = '';
+                angular.forEach($scope.categories, function(category) {
+                    $scope.selectedCategories[category] = false;
+                });
+                angular.forEach($scope.sorting, function(sort) {
+                    $scope.selectedSorts[sort] = false;
+                });
+            };
+        });
+    </script>
+</body>
+</html>
